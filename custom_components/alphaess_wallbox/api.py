@@ -9,7 +9,10 @@ from typing import Any
 from aiohttp import ClientError, ClientResponseError, ClientSession
 
 LOGIN_URL = "https://cloud.alphaess.com/api/stable/user/login"
-WALLBOX_BASE_URL = "https://eurcloud.alphaess.com/api/iterate"
+# The current AlphaESS app/web portal persists wallbox changes on cloud.alphaess.com.
+# The older eurcloud host can acknowledge and echo a changed mode without applying it
+# to the backend used by the app and charger.
+WALLBOX_BASE_URL = "https://cloud.alphaess.com/api/iterate"
 
 AUTH_ERROR_CODES = {401, 403, 6070}
 AUTH_ERROR_MESSAGES = {

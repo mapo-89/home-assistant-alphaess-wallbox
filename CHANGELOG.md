@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+# 0.2.1
+
+## Fixed
+
+- Send wallbox configuration and charging-mode changes to the current AlphaESS cloud endpoint so changes persist in the AlphaESS app and on the charger.
+
 # 0.2.0
 
 ## Added
