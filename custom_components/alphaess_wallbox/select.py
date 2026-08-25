@@ -54,14 +54,12 @@ class AlphaESSWallboxChargingModeSelect(
 
     @property
     def current_option(self) -> str | None:
-        config_data = self.coordinator.data.get("config", {}).get("data")
-        if not isinstance(config_data, dict):
-            return None
-        old_pile = config_data.get("oldPileData")
-        if not isinstance(old_pile, dict):
+        charger = self.coordinator.data.get("charger")
+        g1t = charger.get("g1T") if isinstance(charger, dict) else None
+        if not isinstance(g1t, dict):
             return None
         try:
-            mode = int(old_pile.get("chargingmode"))
+            mode = int(g1t.get("chargeMode"))
         except (TypeError, ValueError):
             return None
         return MODE_TO_OPTION.get(mode)
@@ -71,4 +69,3 @@ class AlphaESSWallboxChargingModeSelect(
         if mode is None:
             raise ValueError(f"Unsupported charging mode option: {option}")
         await self.coordinator.async_set_charging_mode(mode)
-

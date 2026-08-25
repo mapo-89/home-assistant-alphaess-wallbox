@@ -23,29 +23,22 @@ class AlphaESSWallboxSensorDescription(SensorEntityDescription):
 
 
 def _mode(data: dict[str, Any]) -> Any:
-    config_data = data.get("config", {}).get("data")
-    if not isinstance(config_data, dict):
-        return None
-    old_pile = config_data.get("oldPileData")
-    return old_pile.get("chargingmode") if isinstance(old_pile, dict) else None
+    charger = data.get("charger")
+    g1t = charger.get("g1T") if isinstance(charger, dict) else None
+    return g1t.get("chargeMode") if isinstance(g1t, dict) else None
 
 
 def _api_state(data: dict[str, Any]) -> str:
-    codes = [data.get(key, {}).get("code") for key in ("config", "status")]
-    return "connected" if all(code == 200 for code in codes) else "error"
+    return "connected" if isinstance(data.get("ess"), dict) else "error"
 
 
 def _safe_status_attrs(data: dict[str, Any]) -> dict[str, Any]:
-    status = data.get("status", {})
-    payload = status.get("data")
-    attrs: dict[str, Any] = {
-        "code": status.get("code"),
-        "message": status.get("msg"),
-    }
-    if isinstance(payload, dict):
-        for key in ("mode", "evcGunLockFlag"):
-            if key in payload:
-                attrs[key] = payload[key]
+    charger = data.get("charger")
+    attrs: dict[str, Any] = {}
+    if isinstance(charger, dict):
+        for key in ("sn", "model", "softwareVersion", "hardwareVersion", "phase"):
+            if key in charger:
+                attrs[key] = charger[key]
     return attrs
 
 
@@ -110,4 +103,3 @@ class AlphaESSWallboxSensor(
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         return self.entity_description.attrs_fn(self.coordinator.data)
-

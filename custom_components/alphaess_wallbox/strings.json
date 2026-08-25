@@ -9,7 +9,7 @@
           "username": "Username",
           "password": "Password",
           "system_sn": "System serial number",
-          "charging_pile_id": "Charging pile ID",
+          "charger_sn": "EV charger serial number (optional for one charger)",
           "scan_interval": "Scan interval (seconds)"
         }
       }

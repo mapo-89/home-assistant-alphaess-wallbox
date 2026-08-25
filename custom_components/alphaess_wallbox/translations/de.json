@@ -9,7 +9,7 @@
           "username": "Benutzername",
           "password": "Passwort",
           "system_sn": "System-Seriennummer",
-          "charging_pile_id": "Wallbox-ID",
+          "charger_sn": "Wallbox-Seriennummer (bei einer Wallbox optional)",
           "scan_interval": "Abfrageintervall (Sekunden)"
         }
       }

@@ -13,7 +13,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import AlphaESSWallboxApi, AlphaESSWallboxError
 from .const import (
-    CONF_CHARGING_PILE_ID,
+    CONF_CHARGER_SN,
     CONF_SCAN_INTERVAL,
     CONF_SYSTEM_SN,
     DEFAULT_SCAN_INTERVAL,
@@ -40,7 +40,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         entry.data[CONF_USERNAME],
         entry.data[CONF_PASSWORD],
         entry.data[CONF_SYSTEM_SN],
-        entry.data[CONF_CHARGING_PILE_ID],
+        entry.data.get(CONF_CHARGER_SN),
     )
     coordinator = AlphaESSWallboxCoordinator(
         hass, api, entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
@@ -97,4 +97,3 @@ def _resolve_coordinator(
             "config_entry_id is required when multiple AlphaESS Wallbox entries exist"
         )
     return next(iter(entries.values()))
-

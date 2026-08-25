@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented in this file.
 
+# 0.3.0
+
+## Added
+
+- Optional EV charger serial-number selection for systems with more than one charger.
+
+## Changed
+
+- Migrate to the current AlphaESS European platform API for authentication, charger discovery, status updates, and charging-mode control.
+- Read the charging mode and device details from the selected charger in the ESS configuration.
+- Preserve the complete charger configuration when changing the charging mode, then verify the persisted value.
+- Update English and German configuration labels for the optional charger serial number.
+
 # 0.2.2
 
 ## Fixed

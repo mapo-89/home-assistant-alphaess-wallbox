@@ -17,10 +17,9 @@ from .api import (
     AlphaESSWallboxError,
 )
 from .const import (
-    CONF_CHARGING_PILE_ID,
+    CONF_CHARGER_SN,
     CONF_SCAN_INTERVAL,
     CONF_SYSTEM_SN,
-    DEFAULT_CHARGING_PILE_ID,
     DEFAULT_SCAN_INTERVAL,
     DOMAIN,
 )
@@ -44,7 +43,7 @@ class AlphaESSWallboxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 user_input[CONF_USERNAME],
                 user_input[CONF_PASSWORD],
                 system_sn,
-                user_input[CONF_CHARGING_PILE_ID].strip(),
+                user_input.get(CONF_CHARGER_SN, "").strip() or None,
             )
             try:
                 await api.async_validate()
@@ -57,7 +56,7 @@ class AlphaESSWallboxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             else:
                 data = dict(user_input)
                 data[CONF_SYSTEM_SN] = system_sn
-                data[CONF_CHARGING_PILE_ID] = user_input[CONF_CHARGING_PILE_ID].strip()
+                data[CONF_CHARGER_SN] = user_input.get(CONF_CHARGER_SN, "").strip()
                 return self.async_create_entry(title=f"AlphaESS Wallbox {system_sn}", data=data)
 
         schema = vol.Schema(
@@ -65,13 +64,10 @@ class AlphaESSWallboxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_USERNAME): str,
                 vol.Required(CONF_PASSWORD): str,
                 vol.Required(CONF_SYSTEM_SN): str,
-                vol.Required(
-                    CONF_CHARGING_PILE_ID, default=DEFAULT_CHARGING_PILE_ID
-                ): str,
+                vol.Optional(CONF_CHARGER_SN, default=""): str,
                 vol.Optional(
                     CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL
                 ): vol.All(vol.Coerce(int), vol.Range(min=10, max=3600)),
             }
         )
         return self.async_show_form(step_id="user", data_schema=schema, errors=errors)
-

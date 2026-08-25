@@ -29,21 +29,21 @@ class AlphaESSWallboxCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
     async def _async_update_data(self) -> dict[str, Any]:
         try:
-            config = await self.api.async_get_wallbox_config()
-            status = await self.api.async_get_wallbox_status()
+            ess = await self.api.async_get_ess()
+            charger = self.api.get_charger(ess)
         except AlphaESSWallboxError as err:
             raise UpdateFailed(str(err)) from err
-        return {"config": config, "status": status}
+        return {"ess": ess, "charger": charger}
 
     async def async_set_charging_mode(self, charging_mode: int) -> dict[str, Any]:
         """Set a mode and verify that AlphaESS persisted it."""
         result = await self.api.async_set_charging_mode(charging_mode)
         for _attempt in range(5):
             await asyncio.sleep(3)
-            config = await self.api.async_get_wallbox_config()
-            data = config.get("data")
-            old_pile = data.get("oldPileData") if isinstance(data, dict) else None
-            actual_mode = old_pile.get("chargingmode") if isinstance(old_pile, dict) else None
+            ess = await self.api.async_get_ess()
+            charger = self.api.get_charger(ess)
+            g1t = charger.get("g1T")
+            actual_mode = g1t.get("chargeMode") if isinstance(g1t, dict) else None
             try:
                 persisted_mode = int(actual_mode)
             except (TypeError, ValueError):
