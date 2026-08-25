@@ -1,6 +1,6 @@
 # Home Assistant AlphaESS Wallbox
 
-[![Version](https://img.shields.io/badge/version-0.1.0-03a9f4.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.1.1-03a9f4.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-41BDF5.svg?logo=homeassistant&logoColor=white)](https://www.home-assistant.io/)
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)

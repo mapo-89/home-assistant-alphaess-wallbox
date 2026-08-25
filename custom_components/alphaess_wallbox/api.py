@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+from copy import deepcopy
 from typing import Any
 
 from aiohttp import ClientError, ClientResponseError, ClientSession
@@ -78,17 +79,29 @@ class AlphaESSWallboxApi:
 
     async def async_set_charging_mode(self, charging_mode: int) -> dict[str, Any]:
         """Set the private-cloud charging mode."""
-        payload = {
-            "sysSn": self.system_sn,
-            "isNewPile": False,
-            "chargingpileControlOpen": True,
-            "oldPileData": {
-                "chargingmode": charging_mode,
-                "chargingpileSwitch": True,
-                "timeCharge1": False,
-                "timeCharge2": False,
-            },
-        }
+        current = await self.async_get_wallbox_config()
+        current_data = current.get("data")
+        current_data = deepcopy(current_data) if isinstance(current_data, dict) else {}
+        old_pile = current_data.get("oldPileData")
+        old_pile = deepcopy(old_pile) if isinstance(old_pile, dict) else {}
+
+        # Preserve every server-provided wallbox field. AlphaESS may return HTTP/API
+        # success for incomplete payloads while silently retaining the old hardware mode.
+        old_pile["chargingmode"] = charging_mode
+        old_pile.setdefault("chargingpileSwitch", True)
+        old_pile.setdefault("timeCharge1", False)
+        old_pile.setdefault("timeCharge2", False)
+        current_data.update(
+            {
+                "sysSn": self.system_sn,
+                "isNewPile": current_data.get("isNewPile", False),
+                "chargingpileControlOpen": current_data.get(
+                    "chargingpileControlOpen", True
+                ),
+                "oldPileData": old_pile,
+            }
+        )
+        payload = current_data
         return await self._authenticated_request(
             "POST", f"{WALLBOX_BASE_URL}/newEv/setNewEv", json=payload
         )
@@ -169,4 +182,3 @@ def _safe_error(response: dict[str, Any], fallback: str) -> str:
     if message:
         return f"{message} (code {code})" if code is not None else message
     return f"{fallback} (code {code})" if code is not None else fallback
-
