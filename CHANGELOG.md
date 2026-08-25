@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+# 0.2.2
+
+## Fixed
+
+- Restore the proven AlphaESS wallbox API endpoint and request payload for changing the charging mode.
+- Avoid sending unnecessary wallbox configuration fields when applying a charging-mode change.
+
 # 0.2.1
 
 ## Fixed
