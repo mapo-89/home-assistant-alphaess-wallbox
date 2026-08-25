@@ -1,11 +1,12 @@
 {
   "domain": "alphaess_wallbox",
   "name": "AlphaESS Wallbox (private Cloud API)",
-  "codeowners": [],
+  "codeowners": ["@mapo-89"],
   "config_flow": true,
-  "documentation": "https://github.com/local/alphaess_wallbox",
+  "documentation": "https://github.com/mapo-89/home-assistant-alphaess-wallbox",
+  "issue_tracker": "https://github.com/mapo-89/home-assistant-alphaess-wallbox/issues",
   "integration_type": "device",
   "iot_class": "cloud_polling",
   "requirements": [],
-  "version": "0.4.2"
+  "version": "0.4.3"
 }

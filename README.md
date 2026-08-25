@@ -1,14 +1,16 @@
 # Home Assistant AlphaESS Wallbox
 
-[![Version](https://img.shields.io/badge/version-0.4.2-03a9f4.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.4.3-03a9f4.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-41BDF5.svg?logo=homeassistant&logoColor=white)](https://www.home-assistant.io/)
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![GitHub issues](https://img.shields.io/github/issues/mapo-89/home-assistant-alphaess-wallbox.svg)](https://github.com/mapo-89/home-assistant-alphaess-wallbox/issues)
-[![GitHub stars](https://img.shields.io/github/stars/mapo-89/home-assistant-alphaess-wallbox.svg)](https://github.com/mapo-89/home-assistant-alphaess-wallbox/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/mapo-89/home-assistant-alphaess-wallbox.svg?style=flat)](https://github.com/mapo-89/home-assistant-alphaess-wallbox/stargazers)
 [![Last commit](https://img.shields.io/github/last-commit/mapo-89/home-assistant-alphaess-wallbox.svg)](https://github.com/mapo-89/home-assistant-alphaess-wallbox/commits/main)
 
 [![Open your Home Assistant instance and add this repository to HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=mapo-89&repository=home-assistant-alphaess-wallbox&category=integration)
+
+<a href="https://buymeacoffee.com/mapo"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" height="60"></a>
 
 An unofficial Home Assistant custom integration for reading and controlling an AlphaESS wallbox through the private AlphaESS cloud API.
 
@@ -50,9 +52,22 @@ Copy `custom_components/alphaess_wallbox` to the `custom_components` directory i
 
 ## Configuration
 
-Enter the AlphaESS login email, the normal password used on the AlphaESS login page and the ESS system serial number. The integration transforms the password as required by the platform login API; existing configurations that already contain the transformed password remain supported. If the system has multiple EV chargers, also enter the charger serial number; it is optional when exactly one charger is present. The integration authenticates with the current AlphaESS European platform API.
+Enter the AlphaESS login email, the normal password used on the AlphaESS login page and the ESS system serial number. The integration performs the password transformation required by the current session API internally.
 
-After setup, use **Configure** on the integration page to update credentials, the optional charger serial number, or the scan interval. If AlphaESS rejects the stored credentials, Home Assistant prompts for reauthentication.
+Use **Settings → Devices & services → AlphaESS Wallbox → Configure** to change credentials later. Reconfiguration reloads the config entry; a full Home Assistant restart is not required.
+
+## Entities
+
+- **Charging mode** select: reads and changes the wallbox charging mode.
+- **Charging mode** sensor: exposes the numeric AlphaESS mode ID.
+- **API status** sensor: reports connectivity and safe device metadata without tokens.
+
+Supported modes:
+
+- `eco_slow` (1)
+- `eco_gentle` (2)
+- `eco_fast` (3)
+- `maximum_power` (4)
 
 ## Actions
 
@@ -102,5 +117,3 @@ GitHub Actions additionally validates all JSON files on pushes and pull requests
 MIT. See [LICENSE](LICENSE).
 
 AlphaESS and related product names and logos are trademarks of their respective owners.
-
-<a href="https://buymeacoffee.com/mapo"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=mapo&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" alt="Buy me a coffee"></a>

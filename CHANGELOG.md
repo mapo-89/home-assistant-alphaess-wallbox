@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+# 0.4.3
+
+## Added
+
+- Add local AlphaESS branding assets for Home Assistant 2026.3 and newer.
+
 # 0.4.2
 
 ## Added
