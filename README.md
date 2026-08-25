@@ -1,7 +1,7 @@
 # Home Assistant AlphaESS Wallbox
 
-[![Version](https://img.shields.io/badge/version-0.4.3-03a9f4.svg)](CHANGELOG.md)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Version](https://img.shields.io/badge/version-0.4.3-03a9f4.svg)](https://github.com/mapo-89/home-assistant-alphaess-wallbox/releases/tag/v0.4.3)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/mapo-89/home-assistant-alphaess-wallbox/blob/main/LICENSE)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-41BDF5.svg?logo=homeassistant&logoColor=white)](https://www.home-assistant.io/)
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![GitHub issues](https://img.shields.io/github/issues/mapo-89/home-assistant-alphaess-wallbox.svg)](https://github.com/mapo-89/home-assistant-alphaess-wallbox/issues)
