@@ -1,0 +1,33 @@
+{
+  "title": "AlphaESS Wallbox",
+  "config": {
+    "step": {
+      "user": {
+        "title": "AlphaESS-Wallbox verbinden",
+        "description": "Die Zugangsdaten werden im Home-Assistant-Konfigurationseintrag gespeichert. Access- und Refresh-Token bleiben ausschließlich im Arbeitsspeicher und werden nicht als Entitätsattribute veröffentlicht.",
+        "data": {
+          "username": "Benutzername",
+          "password": "Passwort",
+          "system_sn": "System-Seriennummer",
+          "charging_pile_id": "Wallbox-ID",
+          "scan_interval": "Abfrageintervall (Sekunden)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zu AlphaESS nicht möglich",
+      "invalid_auth": "Ungültige Zugangsdaten",
+      "unknown": "Unerwartete Antwort von AlphaESS"
+    },
+    "abort": {
+      "already_configured": "Dieses System ist bereits eingerichtet"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "charging_mode": {"name": "Lademodus"},
+      "api_status": {"name": "API-Status"}
+    }
+  }
+}
+

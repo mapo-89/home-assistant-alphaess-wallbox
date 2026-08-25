@@ -1,0 +1,29 @@
+set_charging_mode:
+  name: Set charging mode
+  description: Set the AlphaESS private-cloud wallbox charging mode.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Required only when more than one AlphaESS Wallbox entry exists.
+      selector:
+        text:
+    charging_mode:
+      name: Charging mode
+      description: Numeric AlphaESS charging mode ID.
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 10
+          step: 1
+          mode: box
+refresh:
+  name: Refresh
+  description: Refresh safe AlphaESS wallbox data. Tokens remain internal.
+  fields:
+    config_entry_id:
+      name: Config entry ID
+      description: Required only when more than one AlphaESS Wallbox entry exists.
+      selector:
+        text:
+

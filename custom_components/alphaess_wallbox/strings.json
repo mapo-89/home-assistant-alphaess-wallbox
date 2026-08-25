@@ -1,0 +1,33 @@
+{
+  "title": "AlphaESS Wallbox",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect AlphaESS Wallbox",
+        "description": "Credentials are stored in the Home Assistant config entry. Access and refresh tokens are kept in memory and never exposed as entity attributes.",
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "system_sn": "System serial number",
+          "charging_pile_id": "Charging pile ID",
+          "scan_interval": "Scan interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to AlphaESS",
+      "invalid_auth": "Invalid credentials",
+      "unknown": "Unexpected AlphaESS response"
+    },
+    "abort": {
+      "already_configured": "This system is already configured"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "charging_mode": {"name": "Charging mode"},
+      "api_status": {"name": "API status"}
+    }
+  }
+}
+
