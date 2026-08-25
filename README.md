@@ -1,6 +1,6 @@
 # Home Assistant AlphaESS Wallbox
 
-[![Version](https://img.shields.io/badge/version-0.1.1-03a9f4.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.0-03a9f4.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-41BDF5.svg?logo=homeassistant&logoColor=white)](https://www.home-assistant.io/)
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
@@ -18,7 +18,7 @@ An unofficial Home Assistant custom integration for reading and controlling an A
 ## Features
 
 - Read the current charging mode.
-- Change between the supported Eco and maximum-power modes.
+- Change the charging mode directly in Home Assistant with a select entity, including ECO Slow, ECO Gentle charging, ECO Fast, and Maximum power.
 - Display a token-safe API status and wallbox device information.
 - Reconfigure credentials from the Home Assistant UI without restarting Home Assistant.
 - Keep access and refresh tokens internal instead of exposing them in sensor attributes or command lines.
@@ -100,4 +100,3 @@ MIT. See [LICENSE](LICENSE).
 AlphaESS and related product names and logos are trademarks of their respective owners.
 
 <a href="https://buymeacoffee.com/mapo"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=mapo&button_colour=FFDD00&font_colour=000000&font_family=Lato&outline_colour=000000&coffee_colour=ffffff" alt="Buy me a coffee"></a>
-

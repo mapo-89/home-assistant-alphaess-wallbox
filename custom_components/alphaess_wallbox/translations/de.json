@@ -27,7 +27,17 @@
     "sensor": {
       "charging_mode": {"name": "Lademodus"},
       "api_status": {"name": "API-Status"}
+    },
+    "select": {
+      "charging_mode": {
+        "name": "Lademodus",
+        "state": {
+          "eco_slow": "ECO: Langsam",
+          "eco_gentle": "ECO: Schonladung",
+          "eco_fast": "ECO: Schnell",
+          "maximum_power": "Maximale Leistung"
+        }
+      }
     }
   }
 }
-
