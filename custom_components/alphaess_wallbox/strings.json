@@ -12,6 +12,14 @@
           "charger_sn": "EV charger serial number (optional for one charger)",
           "scan_interval": "Scan interval (seconds)"
         }
+      },
+      "reauth_confirm": {
+        "title": "Reconnect AlphaESS Wallbox",
+        "description": "AlphaESS rejected the stored credentials. Enter the current normal login password.",
+        "data": {
+          "username": "Username",
+          "password": "Password"
+        }
       }
     },
     "error": {
@@ -20,7 +28,27 @@
       "unknown": "Unexpected AlphaESS response"
     },
     "abort": {
-      "already_configured": "This system is already configured"
+      "already_configured": "This system is already configured",
+      "reauth_successful": "Credentials updated successfully"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Reconfigure AlphaESS Wallbox",
+        "description": "Leave Password empty to keep the stored password. Changes are validated before they are saved.",
+        "data": {
+          "username": "Username",
+          "password": "New password (optional)",
+          "charger_sn": "EV charger serial number (optional for one charger)",
+          "scan_interval": "Scan interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to AlphaESS",
+      "invalid_auth": "Invalid credentials",
+      "unknown": "Unexpected AlphaESS response"
     }
   },
   "entity": {

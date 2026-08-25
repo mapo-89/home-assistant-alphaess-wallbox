@@ -12,6 +12,14 @@
           "charger_sn": "Wallbox-Seriennummer (bei einer Wallbox optional)",
           "scan_interval": "Abfrageintervall (Sekunden)"
         }
+      },
+      "reauth_confirm": {
+        "title": "AlphaESS-Wallbox neu verbinden",
+        "description": "AlphaESS hat die gespeicherten Zugangsdaten abgelehnt. Gib das aktuelle normale Login-Passwort ein.",
+        "data": {
+          "username": "Benutzername",
+          "password": "Passwort"
+        }
       }
     },
     "error": {
@@ -20,7 +28,27 @@
       "unknown": "Unerwartete Antwort von AlphaESS"
     },
     "abort": {
-      "already_configured": "Dieses System ist bereits eingerichtet"
+      "already_configured": "Dieses System ist bereits eingerichtet",
+      "reauth_successful": "Zugangsdaten wurden erfolgreich aktualisiert"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "AlphaESS-Wallbox neu konfigurieren",
+        "description": "Lasse Passwort leer, um das gespeicherte Passwort beizubehalten. Änderungen werden vor dem Speichern geprüft.",
+        "data": {
+          "username": "Benutzername",
+          "password": "Neues Passwort (optional)",
+          "charger_sn": "Wallbox-Seriennummer (bei einer Wallbox optional)",
+          "scan_interval": "Abfrageintervall (Sekunden)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Verbindung zu AlphaESS nicht möglich",
+      "invalid_auth": "Ungültige Zugangsdaten",
+      "unknown": "Unerwartete Antwort von AlphaESS"
     }
   },
   "entity": {

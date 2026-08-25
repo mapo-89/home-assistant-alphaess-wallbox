@@ -63,18 +63,20 @@ class AlphaESSWallboxApi:
     async def async_login(self) -> None:
         """Create a platform session without exposing tokens to HA."""
         encrypted_password = encrypt_login_password(self._password, self._username)
-        try:
-            response = await self._create_session(encrypted_password)
-        except AlphaESSWallboxAuthError:
-            # Compatibility with 0.3.0 entries where users had to store the
-            # already transformed value from the browser request.
-            response = await self._create_session(self._password)
-        token = response.get("accessToken")
-        token_type = response.get("tokenType", "Bearer")
-        if not isinstance(token, str) or not token:
-            raise AlphaESSWallboxAuthError("Login response contains no access token")
-        self._access_token = token
-        self._token_type = str(token_type or "Bearer")
+        # The raw fallback keeps 0.3.0 entries working: that version required
+        # users to store the already transformed browser payload value.
+        candidates = dict.fromkeys((encrypted_password, self._password))
+        for password in candidates:
+            try:
+                response = await self._create_session(password)
+            except AlphaESSWallboxAuthError:
+                continue
+            token = response.get("accessToken")
+            if isinstance(token, str) and token:
+                self._access_token = token
+                self._token_type = str(response.get("tokenType") or "Bearer")
+                return
+        raise AlphaESSWallboxAuthError("AlphaESS rejected the credentials")
 
     async def _create_session(self, password: str) -> dict[str, Any]:
         """Send one login request without retaining the transformed password."""

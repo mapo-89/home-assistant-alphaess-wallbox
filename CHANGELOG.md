@@ -2,6 +2,19 @@
 
 All notable changes to this project are documented in this file.
 
+# 0.4.0
+
+## Added
+
+- Home Assistant options flow for changing credentials, the optional charger serial number, and the scan interval after setup.
+- Reauthentication flow that prompts for updated credentials when AlphaESS rejects the stored login.
+- English and German UI translations for reconfiguration and reauthentication.
+
+## Changed
+
+- Reload the integration automatically after saved option changes.
+- Try the transformed and existing password values during login to improve compatibility with earlier configurations.
+
 # 0.3.1
 
 ## Fixed

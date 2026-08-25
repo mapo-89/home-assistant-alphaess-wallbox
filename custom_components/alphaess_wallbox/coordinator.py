@@ -8,8 +8,9 @@ import logging
 from typing import Any
 
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.exceptions import ConfigEntryAuthFailed
 
-from .api import AlphaESSWallboxApi, AlphaESSWallboxError
+from .api import AlphaESSWallboxApi, AlphaESSWallboxAuthError, AlphaESSWallboxError
 from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
@@ -31,6 +32,8 @@ class AlphaESSWallboxCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         try:
             ess = await self.api.async_get_ess()
             charger = self.api.get_charger(ess)
+        except AlphaESSWallboxAuthError as err:
+            raise ConfigEntryAuthFailed("AlphaESS credentials were rejected") from err
         except AlphaESSWallboxError as err:
             raise UpdateFailed(str(err)) from err
         return {"ess": ess, "charger": charger}

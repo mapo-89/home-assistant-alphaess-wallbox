@@ -35,19 +35,21 @@ REFRESH_SCHEMA = vol.Schema({vol.Optional("config_entry_id"): cv.string})
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up AlphaESS Wallbox from a config entry."""
+    config = {**entry.data, **entry.options}
     api = AlphaESSWallboxApi(
         async_get_clientsession(hass),
-        entry.data[CONF_USERNAME],
-        entry.data[CONF_PASSWORD],
-        entry.data[CONF_SYSTEM_SN],
-        entry.data.get(CONF_CHARGER_SN),
+        config[CONF_USERNAME],
+        config[CONF_PASSWORD],
+        config[CONF_SYSTEM_SN],
+        config.get(CONF_CHARGER_SN),
     )
     coordinator = AlphaESSWallboxCoordinator(
-        hass, api, entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
+        hass, api, config.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL)
     )
     await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
+    entry.async_on_unload(entry.add_update_listener(async_reload_entry))
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     if not hass.services.has_service(DOMAIN, SERVICE_SET_CHARGING_MODE):
@@ -69,6 +71,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             DOMAIN, SERVICE_REFRESH, async_refresh, schema=REFRESH_SCHEMA
         )
     return True
+
+
+async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Reload the entry after its options change."""
+    await hass.config_entries.async_reload(entry.entry_id)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

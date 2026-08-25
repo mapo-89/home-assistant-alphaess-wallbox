@@ -1,6 +1,6 @@
 # Home Assistant AlphaESS Wallbox
 
-[![Version](https://img.shields.io/badge/version-0.3.1-03a9f4.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.4.0-03a9f4.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-41BDF5.svg?logo=homeassistant&logoColor=white)](https://www.home-assistant.io/)
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
@@ -21,7 +21,7 @@ An unofficial Home Assistant custom integration for reading and controlling an A
 - Change the charging mode directly in Home Assistant with a select entity, including ECO Slow, ECO Gentle charging, ECO Fast, and Maximum power.
 - Select a specific EV charger by serial number when an ESS system has multiple chargers.
 - Display a token-safe API status and wallbox device information.
-- Reconfigure credentials from the Home Assistant UI without restarting Home Assistant.
+- Reconfigure credentials, the charger serial number, and scan interval from the Home Assistant UI; changes reload the integration automatically.
 - Keep access and refresh tokens internal instead of exposing them in sensor attributes or command lines.
 - English and German UI translations.
 
@@ -50,6 +50,8 @@ Copy `custom_components/alphaess_wallbox` to the `custom_components` directory i
 ## Configuration
 
 Enter the AlphaESS login email, the normal password used on the AlphaESS login page and the ESS system serial number. The integration transforms the password as required by the platform login API; existing configurations that already contain the transformed password remain supported. If the system has multiple EV chargers, also enter the charger serial number; it is optional when exactly one charger is present. The integration authenticates with the current AlphaESS European platform API.
+
+After setup, use **Configure** on the integration page to update credentials, the optional charger serial number, or the scan interval. If AlphaESS rejects the stored credentials, Home Assistant prompts for reauthentication.
 
 ## Actions
 
