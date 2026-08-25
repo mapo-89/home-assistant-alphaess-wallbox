@@ -6,12 +6,12 @@ from typing import Any
 
 from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import CONF_SYSTEM_SN, DOMAIN
 from .coordinator import AlphaESSWallboxCoordinator
+from .device import device_info
 
 MODE_TO_OPTION = {
     1: "eco_slow",
@@ -45,12 +45,7 @@ class AlphaESSWallboxChargingModeSelect(
         super().__init__(coordinator)
         system_sn = entry.data[CONF_SYSTEM_SN]
         self._attr_unique_id = f"{entry.entry_id}_charging_mode_select"
-        self._attr_device_info = DeviceInfo(
-            identifiers={(DOMAIN, system_sn)},
-            manufacturer="AlphaESS",
-            model="Wallbox private Cloud API",
-            name=f"AlphaESS Wallbox {system_sn}",
-        )
+        self._attr_device_info = device_info(system_sn, coordinator.data)
 
     @property
     def current_option(self) -> str | None:

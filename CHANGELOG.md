@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
+# 0.4.2
+
+## Added
+
+- Populate the Home Assistant device with the charger model, serial number, software version, and hardware version returned by AlphaESS.
+
+## Changed
+
+- Share the dynamic charger device metadata between sensor and charging-mode select entities.
+
 # 0.4.1
 
 ## Fixed

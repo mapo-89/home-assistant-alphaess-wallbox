@@ -8,12 +8,12 @@ from typing import Any, Callable
 from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import EntityCategory
-from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import CONF_SYSTEM_SN, DOMAIN
 from .coordinator import AlphaESSWallboxCoordinator
+from .device import device_info
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -89,12 +89,7 @@ class AlphaESSWallboxSensor(
         self.entity_description = description
         system_sn = entry.data[CONF_SYSTEM_SN]
         self._attr_unique_id = f"{entry.entry_id}_{description.key}"
-        self._attr_device_info = DeviceInfo(
-            identifiers={(DOMAIN, system_sn)},
-            manufacturer="AlphaESS",
-            model="Wallbox private Cloud API",
-            name=f"AlphaESS Wallbox {system_sn}",
-        )
+        self._attr_device_info = device_info(system_sn, coordinator.data)
 
     @property
     def native_value(self):

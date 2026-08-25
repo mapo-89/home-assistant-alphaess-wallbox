@@ -1,6 +1,6 @@
 # Home Assistant AlphaESS Wallbox
 
-[![Version](https://img.shields.io/badge/version-0.4.1-03a9f4.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.4.2-03a9f4.svg)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-41BDF5.svg?logo=homeassistant&logoColor=white)](https://www.home-assistant.io/)
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
@@ -21,6 +21,7 @@ An unofficial Home Assistant custom integration for reading and controlling an A
 - Change the charging mode directly in Home Assistant with a select entity, including ECO Slow, ECO Gentle charging, ECO Fast, and Maximum power.
 - Select a specific EV charger by serial number when an ESS system has multiple chargers.
 - Display a token-safe API status and wallbox device information.
+- Show the charger model, serial number, software version, and hardware version in Home Assistant device information when available.
 - Reconfigure credentials, the charger serial number, and scan interval from the Home Assistant UI; changes reload the integration automatically.
 - Keep access and refresh tokens internal instead of exposing them in sensor attributes or command lines.
 - English and German UI translations.
