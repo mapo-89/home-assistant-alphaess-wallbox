@@ -8,6 +8,7 @@ import voluptuous as vol
 
 from homeassistant import config_entries
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
+from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import (
@@ -31,11 +32,12 @@ class AlphaESSWallboxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     @staticmethod
+    @callback
     def async_get_options_flow(
-        config_entry: config_entries.ConfigEntry,
+        _config_entry: config_entries.ConfigEntry,
     ) -> AlphaESSWallboxOptionsFlow:
         """Return the options flow handler."""
-        return AlphaESSWallboxOptionsFlow(config_entry)
+        return AlphaESSWallboxOptionsFlow()
 
     async def async_step_user(self, user_input: dict[str, Any] | None = None):
         errors: dict[str, str] = {}
@@ -120,9 +122,6 @@ class AlphaESSWallboxConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
 class AlphaESSWallboxOptionsFlow(config_entries.OptionsFlow):
     """Allow credentials and mutable wallbox settings to be changed."""
-
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        self.config_entry = config_entry
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None):
         """Validate changed settings before storing them."""

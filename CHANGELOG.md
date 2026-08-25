@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+# 0.4.1
+
+## Fixed
+
+- Align the options-flow factory with the current Home Assistant API so reconfiguration opens correctly.
+
 # 0.4.0
 
 ## Added
