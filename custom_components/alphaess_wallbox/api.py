@@ -3,14 +3,30 @@
 from __future__ import annotations
 
 import asyncio
+import base64
 from copy import deepcopy
+import hashlib
 import json
 from typing import Any
 
 from aiohttp import ClientError, ClientSession
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives.padding import PKCS7
 
 BASE_URL = "https://platform-eur.alphaess.com/api"
 LOGIN_URL = f"{BASE_URL}/users-center/sessions"
+
+
+def encrypt_login_password(password: str, username: str) -> str:
+    """Match the password transformation used by cloud.alphaess.com."""
+    username_bytes = username.encode("utf-8")
+    key = hashlib.sha256(username_bytes).digest()
+    iv = hashlib.md5(username_bytes, usedforsecurity=False).digest()
+    padder = PKCS7(algorithms.AES.block_size).padder()
+    padded_password = padder.update(password.encode("utf-8")) + padder.finalize()
+    encryptor = Cipher(algorithms.AES(key), modes.CBC(iv)).encryptor()
+    ciphertext = encryptor.update(padded_password) + encryptor.finalize()
+    return base64.b64encode(ciphertext).decode("ascii")
 
 
 class AlphaESSWallboxError(Exception):
@@ -46,20 +62,32 @@ class AlphaESSWallboxApi:
 
     async def async_login(self) -> None:
         """Create a platform session without exposing tokens to HA."""
-        payload = {
-            "email": self._username,
-            "type": "password",
-            "password": self._password,
-        }
-        response = await self._request_json(
-            "POST", LOGIN_URL, json=payload, authenticate=False
-        )
+        encrypted_password = encrypt_login_password(self._password, self._username)
+        try:
+            response = await self._create_session(encrypted_password)
+        except AlphaESSWallboxAuthError:
+            # Compatibility with 0.3.0 entries where users had to store the
+            # already transformed value from the browser request.
+            response = await self._create_session(self._password)
         token = response.get("accessToken")
         token_type = response.get("tokenType", "Bearer")
         if not isinstance(token, str) or not token:
             raise AlphaESSWallboxAuthError("Login response contains no access token")
         self._access_token = token
         self._token_type = str(token_type or "Bearer")
+
+    async def _create_session(self, password: str) -> dict[str, Any]:
+        """Send one login request without retaining the transformed password."""
+        return await self._request_json(
+            "POST",
+            LOGIN_URL,
+            json={
+                "email": self._username,
+                "type": "password",
+                "password": password,
+            },
+            authenticate=False,
+        )
 
     async def async_get_ess(self) -> dict[str, Any]:
         """Fetch the current ESS configuration."""
@@ -155,7 +183,9 @@ class AlphaESSWallboxApi:
                 async with self._session.request(
                     method, url, headers=headers, **kwargs
                 ) as response:
-                    if response.status in (401, 403):
+                    if response.status in (401, 403) or (
+                        not authenticate and response.status in (400, 422)
+                    ):
                         raise AlphaESSWallboxAuthError("AlphaESS session expired")
                     response.raise_for_status()
                     body = await response.text()

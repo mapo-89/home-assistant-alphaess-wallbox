@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+# 0.3.1
+
+## Fixed
+
+- Transform the normal AlphaESS account password as required by the platform login API.
+- Keep compatibility with existing configurations that already contain the transformed password.
+
 # 0.3.0
 
 ## Added
