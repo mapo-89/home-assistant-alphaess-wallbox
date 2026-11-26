@@ -52,6 +52,9 @@
     }
   },
   "entity": {
+    "number": {
+      "charging_current": {"name": "Maximaler Ladestrom je Phase"}
+    },
     "sensor": {
       "charging_mode": {"name": "Lademodus"},
       "api_status": {"name": "API-Status"}

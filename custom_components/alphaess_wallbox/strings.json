@@ -52,6 +52,9 @@
     }
   },
   "entity": {
+    "number": {
+      "charging_current": {"name": "Maximum charging current per phase"}
+    },
     "sensor": {
       "charging_mode": {"name": "Charging mode"},
       "api_status": {"name": "API status"}

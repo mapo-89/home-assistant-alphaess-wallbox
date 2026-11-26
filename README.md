@@ -58,6 +58,8 @@ Use **Settings → Devices & services → AlphaESS Wallbox → Configure** to ch
 
 ## Entities
 
+- Maximum charging current per phase (6–16 A): a writable Number entity. The value is verified through the AlphaESS API before Home Assistant reports success. The separate household limit is exposed as the read-only `household_current_a` attribute.
+
 - **Charging mode** select: reads and changes the wallbox charging mode.
 - **Charging mode** sensor: exposes the numeric AlphaESS mode ID.
 - **API status** sensor: reports connectivity and safe device metadata without tokens.

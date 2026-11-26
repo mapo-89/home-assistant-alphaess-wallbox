@@ -11,4 +11,4 @@ DEFAULT_SCAN_INTERVAL = 20
 SERVICE_SET_CHARGING_MODE = "set_charging_mode"
 SERVICE_REFRESH = "refresh"
 
-PLATFORMS = ["sensor", "select"]
+PLATFORMS = ["sensor", "select", "number"]

@@ -7,6 +7,7 @@ import base64
 from copy import deepcopy
 import hashlib
 import json
+from math import isfinite
 from typing import Any
 
 from aiohttp import ClientError, ClientSession
@@ -27,6 +28,14 @@ def encrypt_login_password(password: str, username: str) -> str:
     encryptor = Cipher(algorithms.AES(key), modes.CBC(iv)).encryptor()
     ciphertext = encryptor.update(padded_password) + encryptor.finalize()
     return base64.b64encode(ciphertext).decode("ascii")
+
+
+def read_charging_current(charger: dict[str, Any]) -> int | None:
+    settings = charger.get("g1T") if isinstance(charger, dict) else None
+    value = settings.get("chargeCurrent") if isinstance(settings, dict) else None
+    if type(value) in (int, float) and isfinite(value) and 6 <= value <= 16 and value == int(value):
+        return int(value)
+    return None
 
 
 class AlphaESSWallboxError(Exception):
@@ -114,32 +123,24 @@ class AlphaESSWallboxApi:
         return chargers[0]
 
     async def async_set_charging_mode(self, charging_mode: int) -> dict[str, Any]:
-        """Patch the current charger block while preserving every other setting."""
+        return await self._async_set_charger_setting("chargeMode", charging_mode)
+
+    async def async_set_charging_current(self, current: int) -> dict[str, Any]:
+        """Set the per-phase charging current, leaving the household limit intact."""
+        if type(current) is not int or not 6 <= current <= 16:
+            raise AlphaESSWallboxError("Charging current must be a whole number from 6 to 16 A")
+        return await self._async_set_charger_setting("chargeCurrent", current)
+
+    async def _async_set_charger_setting(self, key: str, value: int) -> dict[str, Any]:
         ess = await self.async_get_ess()
-        chargers = ess.get("evCharger")
-        if not isinstance(chargers, list):
-            raise AlphaESSWallboxError("ESS response contains no EV charger list")
-        patched_chargers = deepcopy(chargers)
-
-        target: dict[str, Any] | None = None
-        if self.charger_sn:
-            target = next(
-                (
-                    charger
-                    for charger in patched_chargers
-                    if isinstance(charger, dict) and charger.get("sn") == self.charger_sn
-                ),
-                None,
-            )
-        elif len(patched_chargers) == 1 and isinstance(patched_chargers[0], dict):
-            target = patched_chargers[0]
-        if target is None:
-            raise AlphaESSWallboxError("Configured EV charger was not found")
-
-        g1t = target.get("g1T")
-        if not isinstance(g1t, dict):
+        patched_chargers = deepcopy(ess.get("evCharger"))
+        charger = self.get_charger({"evCharger": patched_chargers})
+        settings = charger.get("g1T")
+        if not isinstance(settings, dict):
             raise AlphaESSWallboxError("EV charger response contains no g1T settings")
-        g1t["chargeMode"] = charging_mode
+        if key == "chargeCurrent" and read_charging_current(charger) is None:
+            raise AlphaESSWallboxError("EV charger response contains no supported charging current")
+        settings[key] = value
 
         return await self._authenticated_request(
             "PATCH",
